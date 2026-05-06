@@ -91,19 +91,19 @@ const projects: Project[] = [
     status: "Building",
   },
   {
-    title: "Prompt Atlas",
-    category: "AI Workflows",
+    title: "Failure Harness",
+    category: "AI Evaluation",
     description:
-      "A structured space for refining prompts, agent setups, and reusable thinking systems.",
-    details: ["Prompt systems", "Knowledge capture", "Agent experiments"],
+      "A local-first LLM evaluation harness for measuring JSON and schema reliability across prompts and model runs.",
+    details: ["Schema validation", "Run reports", "Python + Ollama"],
     status: "Building",
   },
   {
-    title: "Focus Engine",
-    category: "Personal Systems",
+    title: "PoseGuide",
+    category: "iOS / Computer Vision",
     description:
-      "A lightweight environment for momentum tracking, commitments, and disciplined operating rhythm.",
-    details: ["Momentum tracking", "Execution loops", "Interface concepts"],
+      "An iPhone MVP for camera-based pose guidance with simulator-friendly capture flows and pose overlay validation.",
+    details: ["SwiftUI", "Vision overlays", "Node backend"],
     status: "Exploring",
   },
 ];
@@ -222,20 +222,19 @@ function FadeIn({
 function GitHubCalendar() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     fetch("https://github-contributions-api.jogruber.de/v4/varora02")
       .then((res) => res.json())
       .then((res) => {
-        // Filter for 2026
-        const year2026 = res.contributions.filter((d: any) => d.date.startsWith("2026"));
+        const yearData = res.contributions.filter((d: any) => d.date.startsWith(String(currentYear)));
 
-        // Pad for Jan 1, 2026 which is a Thursday (index 4 in 0-6 Sun-Sat)
-        const firstDate = new Date("2026-01-01");
-        const paddingCount = firstDate.getDay(); // 4 for Thursday
+        const firstDate = new Date(`${currentYear}-01-01`);
+        const paddingCount = firstDate.getDay();
         const paddedData = [
           ...Array(paddingCount).fill({ date: "pad", count: 0, level: -1 }),
-          ...year2026
+          ...yearData
         ];
 
         setData(paddedData);
@@ -245,7 +244,7 @@ function GitHubCalendar() {
         console.error("Failed to fetch GitHub contributions:", err);
         setLoading(false);
       });
-  }, []);
+  }, [currentYear]);
 
   const getColor = (level: number) => {
     if (level === -1) return "transparent"; // Padding
@@ -271,7 +270,7 @@ function GitHubCalendar() {
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-black/6 bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.03)] md:p-8">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-[Instrument_Serif] text-xl text-[#000]">Github Contributions 2026</h3>
+        <h3 className="font-[Instrument_Serif] text-xl text-[#000]">GitHub Contributions {currentYear}</h3>
         <div className="flex items-center gap-1.5 font-[Inter] text-[10px] text-[var(--muted)]">
           <span>Less</span>
           {[0, 1, 2, 3, 4].map((l) => (
@@ -612,43 +611,46 @@ function App() {
                       </div>
                     )}
 
-                    {project.title === "Prompt Atlas" && (
+                    {project.title === "Failure Harness" && (
                       <>
-                        <p className="mb-3 font-[Inter] text-[10px] uppercase tracking-widest text-[var(--muted)]">Prompt library</p>
+                        <p className="mb-3 font-[Inter] text-[10px] uppercase tracking-widest text-[var(--muted)]">Schema reliability run</p>
                         {[
-                          { tag: "Planning", prompt: "Break this goal into weekly milestones with clear success criteria and blockers." },
-                          { tag: "Review", prompt: "Identify 3 things I should stop doing and why they're costing me energy." },
-                          { tag: "Agent", prompt: "Act as a senior researcher. Extract the core argument from this context." },
+                          { tag: "JSON parse", prompt: "94% pass rate across local model responses." },
+                          { tag: "Schema valid", prompt: "Required fields, enums, and types checked per case." },
+                          { tag: "Report", prompt: "Markdown summaries capture failure categories and run metadata." },
                         ].map((item) => (
                           <div key={item.tag} className="rounded-xl border border-black/6 bg-white px-4 py-3 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
                             <span className="rounded-full bg-[#e8f2ff] px-2.5 py-0.5 font-[Inter] text-[10px] text-[var(--accent-deep)]">{item.tag}</span>
                             <p className="mt-2 font-[Inter] text-xs leading-5 text-[var(--muted)] line-clamp-2">{item.prompt}</p>
                           </div>
                         ))}
-                        <p className="pt-1 text-center font-[Inter] text-[10px] text-[var(--muted)]">Prompt Atlas · reusable systems</p>
+                        <p className="pt-1 text-center font-[Inter] text-[10px] text-[var(--muted)]">Failure Harness · local eval report</p>
                       </>
                     )}
 
-                    {project.title === "Focus Engine" && (
+                    {project.title === "PoseGuide" && (
                       <>
-                        <p className="mb-3 font-[Inter] text-[10px] uppercase tracking-widest text-[var(--muted)]">Momentum tracker</p>
-                        <div className="grid grid-cols-7 gap-1.5">
-                          {Array.from({ length: 28 }, (_, i) => {
-                            const filled = [0, 1, 2, 4, 5, 7, 8, 9, 11, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26, 27].includes(i);
-                            return (
-                              <div
-                                key={i}
-                                className={`h-7 rounded-md ${filled ? "bg-[var(--accent)]" : "bg-white border border-black/8"
-                                  }`}
-                              />
-                            );
-                          })}
+                        <p className="mb-3 font-[Inter] text-[10px] uppercase tracking-widest text-[var(--muted)]">Pose overlay preview</p>
+                        <div className="mx-auto max-w-[220px] rounded-[2rem] border border-black/10 bg-[#111] p-3 shadow-2xl">
+                          <div className="relative aspect-[9/16] overflow-hidden rounded-[1.4rem] bg-gradient-to-b from-[#e9f3ff] to-[#f7eee6]">
+                            <div className="absolute left-1/2 top-4 h-1.5 w-12 -translate-x-1/2 rounded-full bg-black/20" />
+                            <div className="absolute left-1/2 top-[25%] h-10 w-10 -translate-x-1/2 rounded-full border-2 border-[var(--accent-deep)] bg-white/70" />
+                            <div className="absolute left-1/2 top-[37%] h-24 w-16 -translate-x-1/2 rounded-[2rem] border-2 border-[var(--accent-deep)] bg-white/40" />
+                            <div className="absolute left-[21%] top-[38%] h-1.5 w-24 rotate-[22deg] rounded-full bg-[var(--accent)]" />
+                            <div className="absolute right-[21%] top-[38%] h-1.5 w-24 rotate-[-22deg] rounded-full bg-[var(--accent)]" />
+                            <div className="absolute bottom-[23%] left-[34%] h-24 w-1.5 rotate-[13deg] rounded-full bg-[var(--accent)]" />
+                            <div className="absolute bottom-[23%] right-[34%] h-24 w-1.5 rotate-[-13deg] rounded-full bg-[var(--accent)]" />
+                            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 font-[Inter] text-[10px] text-[var(--accent-deep)]">
+                              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                              Alignment detected
+                            </div>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2 pt-1">
                           <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-                          <span className="font-[Inter] text-xs text-[var(--muted)]">11-day streak active</span>
+                          <span className="font-[Inter] text-xs text-[var(--muted)]">Simulator capture flow active</span>
                         </div>
-                        <p className="text-center font-[Inter] text-[10px] text-[var(--muted)]">Focus Engine · 28-day view</p>
+                        <p className="text-center font-[Inter] text-[10px] text-[var(--muted)]">PoseGuide · guidance overlay</p>
                       </>
                     )}
                   </div>
