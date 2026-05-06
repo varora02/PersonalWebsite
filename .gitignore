@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Environment variables (just in case they are added later)
+.env
+.env.*
+.env.local
+
+# Editor/IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Internal planning and task documents
+_docs/
+Tasks/
+
+# Loose video files at root (generated assets)
+/*.mp4
+
+# Tracked video assets in public/ (ensure they are not ignored)
+!public/videos/*.mp4

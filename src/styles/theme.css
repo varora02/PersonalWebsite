@@ -1,0 +1,43 @@
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted: #6f6f6f;
+  --accent: #6f97c2;
+  --accent-deep: #456b92;
+  --surface: #f6f8fb;
+  --surface-soft: #eef4fa;
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.8s ease-out both;
+}
+
+.animate-fade-rise-delay {
+  animation: fade-rise 0.8s ease-out 0.2s both;
+}
+
+.animate-fade-rise-delay-2 {
+  animation: fade-rise 0.8s ease-out 0.4s both;
+}
+
+@keyframes arrowBounce {
+  from { transform: translateY(0px); }
+  to   { transform: translateY(6px); }
+}
+
+.brand-logo {
+  color: #456b92 !important;
+}
