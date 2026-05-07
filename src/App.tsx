@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-// Words that cycle before settling on nothing
 const CYCLING_WORDS = ["systems", "websites", "services", "apps"];
 
 function CyclingWord({ onDone }: { onDone: () => void }) {
@@ -16,7 +15,7 @@ function CyclingWord({ onDone }: { onDone: () => void }) {
     let idx = 0;
     let count = 0;
     const intervalMs = 350;
-    const totalCycles = CYCLING_WORDS.length * 2; // 2 full loops
+    const totalCycles = CYCLING_WORDS.length * 2;
 
     const tick = () => {
       setWordIndex(idx % CYCLING_WORDS.length);
@@ -26,7 +25,6 @@ function CyclingWord({ onDone }: { onDone: () => void }) {
       if (count < totalCycles) {
         cycleRef.current = setTimeout(tick, intervalMs);
       } else {
-        // Hold last word, then fade out cleanly — no italics
         cycleRef.current = setTimeout(() => {
           setVisible(false);
           cycleRef.current = setTimeout(() => {
@@ -41,9 +39,7 @@ function CyclingWord({ onDone }: { onDone: () => void }) {
     return () => { if (cycleRef.current) clearTimeout(cycleRef.current); };
   }, []);
 
-  // When done, keep an invisible placeholder with the same minWidth so that
-  // "I build" stays left-of-center and the parent's translateX can slide it
-  // to the visual center precisely.
+  // Preserve the word slot so the final "I build" slide stays centered.
   if (done) return <span style={{ display: "inline-block", minWidth: "7ch" }} />;
 
   return (
@@ -63,7 +59,8 @@ function CyclingWord({ onDone }: { onDone: () => void }) {
   );
 }
 
-const HOME_BG_VIDEO_URL = "/videos/home_bg.mp4";
+const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+const HOME_BG_VIDEO_URL = publicAsset("videos/home_bg.mp4");
 
 type Project = {
   title: string;
@@ -247,7 +244,7 @@ function GitHubCalendar() {
   }, [currentYear]);
 
   const getColor = (level: number) => {
-    if (level === -1) return "transparent"; // Padding
+    if (level === -1) return "transparent";
     switch (level) {
       case 1: return "#9be9a8";
       case 2: return "#40c463";
@@ -296,7 +293,6 @@ function GitHubCalendar() {
                 className={`group relative h-2.5 w-2.5 rounded-[2px] ${day.level === -1 ? "" : "hover:ring-2 hover:ring-black/10 transition-all"}`}
                 style={{ backgroundColor: getColor(day.level) }}
               >
-                {/* Tooltip */}
                 {day.level !== -1 && (
                   <div className="absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 scale-75 whitespace-nowrap rounded bg-black px-2.5 py-1.5 font-[Inter] text-[10px] text-white opacity-0 transition-all group-hover:scale-100 group-hover:opacity-100">
                     {day.count} contributions on {day.date}
@@ -331,18 +327,14 @@ function App() {
   const frameRef = useRef<number | null>(null);
   const resetTimeoutRef = useRef<number | null>(null);
 
-  // Cycling word animation state
   const [wordDone, setWordDone] = useState(false);
   const [showArrow, setShowArrow] = useState(false);
   const [arrowVisible, setArrowVisible] = useState(false);
 
   useEffect(() => {
     if (!wordDone) return;
-    // Show arrow 1s after slide finishes (slide is 0.9s)
     const t1 = setTimeout(() => { setShowArrow(true); setArrowVisible(true); }, 1050);
-    // Fade arrow out after 4.4s of visibility (increased by 2s)
     const t2 = setTimeout(() => setArrowVisible(false), 5500);
-    // Remove from DOM after fade completes
     const t3 = setTimeout(() => setShowArrow(false), 6100);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [wordDone]);
@@ -401,9 +393,7 @@ function App() {
   return (
     <div className="bg-[var(--background)] text-[var(--foreground)]">
 
-      {/* ─── HERO ─────────────────────────────────────────────── */}
       <section id="home" className="relative min-h-screen w-full overflow-hidden bg-[var(--background)]">
-        {/* Video backdrop */}
         <div className="absolute z-0 overflow-hidden" style={{ top: "120px", inset: "auto 0 0 0" }}>
           <video
             ref={videoRef}
@@ -417,7 +407,6 @@ function App() {
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(255,255,255,0.25)_24%,rgba(255,255,255,0.02)_46%,rgba(255,255,255,0.08)_70%,rgba(255,255,255,0.52)_100%)]" />
         </div>
 
-        {/* Nav */}
         <div className="relative z-10 mx-auto max-w-7xl px-8 py-6">
           <nav className="flex items-center justify-between">
             <a href="#home" className="brand-logo font-[Instrument_Serif] text-4xl tracking-tight md:text-5xl">
@@ -437,7 +426,6 @@ function App() {
           </nav>
         </div>
 
-        {/* Hero copy */}
         <div className="relative z-10 flex flex-col items-center justify-center px-6 pb-40 pt-[calc(8rem-75px)] text-center">
           <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-7xl flex-col items-center justify-center">
             {/*
@@ -449,9 +437,6 @@ function App() {
               <h1
                 className="font-[Instrument_Serif] text-5xl leading-[0.95] font-normal tracking-[-2.46px] text-[#000000] sm:text-7xl md:text-8xl"
                 style={{
-                  // "I build [word]" starts centered.
-                  // The word slot is minWidth:7ch + 1 space (~0.3em).
-                  // Shift right by half that amount so "I build" lands centered.
                   transform: wordDone ? "translateX(calc((7ch + 0.3em) / 2))" : "translateX(0)",
                   transition: wordDone
                     ? "transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)"
@@ -467,7 +452,6 @@ function App() {
               Helllloooo :) Trying to be ambitious. Learning to ship fast.
             </p>
 
-            {/* Arrow callout — pops in briefly pointing to the CTA */}
             <div
               className="mt-8 flex flex-col items-center gap-1.5"
               style={{
@@ -501,7 +485,6 @@ function App() {
       </section>
 
 
-      {/* ─── FEATURED PROJECT ─────────────────────────────────── */}
       <section className="border-t border-black/6 bg-[var(--background)] px-6 py-20 md:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <FadeIn>
@@ -518,10 +501,8 @@ function App() {
         </div>
       </section>
 
-      {/* ─── PROJECTS GALLERY (featured-style alternating) ─────── */}
       <section id="projects" className="border-t border-black/6 bg-[var(--surface)] px-6 py-20 md:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          {/* GitHub 2026 Heatmap moved from About */}
           <FadeIn delay={0.1}>
             <div className="mb-20">
               <GitHubCalendar />
@@ -543,8 +524,6 @@ function App() {
 
           <div className="flex flex-col gap-6">
             {projects.map((project, index) => {
-              // Even index: sample LEFT, details RIGHT
-              // Odd index:  details LEFT, sample RIGHT
               const sampleLeft = index % 2 === 0;
 
               const DetailsPanel = () => (
@@ -607,7 +586,7 @@ function App() {
 
                     {project.title === "VirtualPet" && (
                       <div className="overflow-hidden rounded-2xl border border-black/5 shadow-2xl transition-transform hover:scale-[1.02]">
-                        <img src="/projects/virtualpet/virtualpet.png" className="w-full h-auto object-cover" alt="VirtualPet" />
+                        <img src={publicAsset("projects/virtualpet/virtualpet.png")} className="w-full h-auto object-cover" alt="VirtualPet" />
                       </div>
                     )}
 
@@ -698,7 +677,6 @@ function App() {
         </div>
       </section>
 
-      {/* ─── EXPERIMENTS ─────────────────────────────────────── */}
       <section id="experiments" className="border-t border-black/6 bg-[var(--surface)] px-6 py-20 md:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <FadeIn>
@@ -713,7 +691,6 @@ function App() {
           </FadeIn>
 
           <div className="grid gap-6 md:grid-cols-3">
-            {/* Experiment 1 — LifeOS Metrics (links to dedicated page) */}
             <FadeIn delay={0}>
               <Link
                 to="/experiments/lifeos-metrics"
@@ -732,14 +709,12 @@ function App() {
               </Link>
             </FadeIn>
 
-            {/* Experiment 2 */}
             <FadeIn delay={0.1}>
               <div className="flex h-full min-h-[200px] items-center justify-center rounded-2xl border border-dashed border-black/10 bg-[var(--surface)] p-7">
                 <p className="font-[Inter] text-xs text-[var(--muted)] italic">Coming soon</p>
               </div>
             </FadeIn>
 
-            {/* Experiment 3 */}
             <FadeIn delay={0.2}>
               <div className="flex flex-col justify-between rounded-2xl border border-black/6 bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
                 <div>
@@ -755,7 +730,6 @@ function App() {
         </div>
       </section>
 
-      {/* ─── ABOUT ──────────────────────────────────────────── */}
       <section id="about" className="border-t border-black/6 bg-[var(--background)] px-6 py-20 md:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <FadeIn>
@@ -769,9 +743,6 @@ function App() {
             </div>
           </FadeIn>
 
-          {/* GitHub 2026 Heatmap moved to Projects above */}
-
-          {/* About Placeholder / Cards */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[1, 2, 3, 4].map((_, i) => (
               <FadeIn key={i} delay={i * 0.1}>
@@ -784,7 +755,6 @@ function App() {
         </div>
       </section>
 
-      {/* ─── FOOTER ───────────────────────────────────────────── */}
       <footer className="border-t border-black/6 bg-[var(--background)] px-6 py-14 md:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
@@ -830,8 +800,6 @@ function App() {
   );
 }
 
-// ─── CAT PAGE ─────────────────────────────────────────────────────────────────
-
 const MANGO_FACTS = [
   "Mango sleeps 12–16 hours a day. The original sleepmaxxer.",
   "A group of cats is called a clowder. Very official.",
@@ -858,7 +826,6 @@ function CatPage() {
       className="min-h-screen"
       style={{ background: "linear-gradient(135deg, #fff9f0 0%, #fff2e0 40%, #ffead0 100%)" }}
     >
-      {/* Nav */}
       <div className="mx-auto max-w-6xl px-8 py-6">
         <nav className="flex items-center justify-between">
           <Link
@@ -876,7 +843,6 @@ function CatPage() {
         </nav>
       </div>
 
-      {/* Hero */}
       <div className="mx-auto max-w-6xl px-8 pb-12 pt-16 text-center">
         <h1
           className="font-[Instrument_Serif] text-6xl leading-none text-[#2a1520] sm:text-7xl md:text-8xl"
@@ -886,7 +852,6 @@ function CatPage() {
         </h1>
       </div>
 
-      {/* Cat Fact Card */}
       <div className="mx-auto mb-10 max-w-2xl px-8">
         <div
           className="relative cursor-pointer overflow-hidden rounded-3xl border border-[#f39c12]/20 bg-white p-8 shadow-[0_8px_40px_rgba(230,126,34,0.08)] transition-all duration-200 hover:scale-[1.01] hover:shadow-[0_12px_50px_rgba(230,126,34,0.14)]"
@@ -924,7 +889,6 @@ function CatPage() {
         </div>
       </div>
 
-      {/* Photo Gallery Grid */}
       <div className="mx-auto max-w-6xl px-8 pb-0">
         <div className="mb-12">
           <p className="mb-1 font-[Inter] text-xs uppercase tracking-[0.32em] text-[#e67e22]">
@@ -935,7 +899,6 @@ function CatPage() {
           </h2>
         </div>
 
-        {/* Floating collage gallery with real photos — spread across 3-4 columns */}
         <div className="relative mx-auto h-[1050px] w-full max-w-7xl overflow-visible">
           {[
             "IMG_0359.jpeg",
@@ -948,23 +911,13 @@ function CatPage() {
             "6373922d-8d75-4d10-8a26-9061f17663bf.jpg"
           ].map((filename, i) => {
             const configs = [
-              // Col 1
               { top: "0%", left: "0%", rotate: "-5deg", scale: 1.0, duration: "8s", delay: "0s" },
-              // Col 2
               { top: "5%", left: "35%", rotate: "4deg", scale: 0.95, duration: "10s", delay: "-2s" },
-              // Col 3
               { top: "0%", left: "70%", rotate: "-3deg", scale: 1.05, duration: "12s", delay: "-4s" },
-              
-              // Col 1.5
               { top: "25%", left: "15%", rotate: "6deg", scale: 1.1, duration: "9s", delay: "-1s" },
-              // Col 2.5
               { top: "30%", left: "55%", rotate: "-4deg", scale: 0.9, duration: "11s", delay: "-5s" },
-              
-              // Col 1
               { top: "55%", left: "5%", rotate: "8deg", scale: 1.15, duration: "13s", delay: "-3s" },
-              // Col 2
               { top: "60%", left: "40%", rotate: "-6deg", scale: 0.95, duration: "14s", delay: "-6s" },
-              // Col 3
               { top: "55%", left: "75%", rotate: "3deg", scale: 1.0, duration: "10s", delay: "-7s" },
             ];
             const cfg = configs[i % configs.length];
@@ -976,7 +929,7 @@ function CatPage() {
                 style={{
                   top: cfg.top,
                   left: cfg.left,
-                  width: "350px", // Increased size
+                  width: "350px",
                   height: "350px",
                   transform: `rotate(${cfg.rotate}) scale(${cfg.scale})`,
                   "--orig-rotate": cfg.rotate,
@@ -985,7 +938,7 @@ function CatPage() {
                 } as React.CSSProperties}
               >
                 <img
-                  src={`/mango/${filename}`}
+                  src={publicAsset(`mango/${filename}`)}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   alt={`Mango photo ${i + 1}`}
                 />
@@ -996,7 +949,6 @@ function CatPage() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="border-t border-[#f39c12]/20 bg-white/60 px-8 py-8 text-center" id="mango-footer">
         <p className="font-[Inter] text-xs text-[#d35400]/60">
           Made with love for Mango ·{" "}
@@ -1009,20 +961,15 @@ function CatPage() {
   );
 }
 
-// ─── APP ROUTER ───────────────────────────────────────────────────────────────
-
 function HomePage() {
   return <App />;
 }
-
-// ─── LIFEOS METRICS EXPERIMENT PAGE ────────────────────────────────────────────
 
 function LifeOSMetricsPage() {
   const navigate = useNavigate();
 
   return (
     <div className="bg-[var(--background)] text-[var(--foreground)]">
-      {/* Nav */}
       <div className="mx-auto max-w-4xl px-8 py-6">
         <nav className="flex items-center justify-between">
           <Link
@@ -1040,7 +987,6 @@ function LifeOSMetricsPage() {
         </nav>
       </div>
 
-      {/* Article */}
       <article className="mx-auto max-w-4xl px-8 pb-24 pt-8">
 
 
@@ -1053,7 +999,6 @@ function LifeOSMetricsPage() {
 
         <div className="mt-12 h-px w-full bg-black/6" />
 
-        {/* Body */}
         <div className="mt-12 space-y-10 font-[Inter] text-base leading-8 text-[#333]">
           <section>
             <h2 className="font-[Instrument_Serif] text-3xl text-[#000]">The premise</h2>
@@ -1139,7 +1084,6 @@ function LifeOSMetricsPage() {
         </div>
       </article>
 
-      {/* Footer */}
       <footer className="border-t border-black/6 bg-[var(--background)] px-8 py-10 text-center">
         <p className="font-[Inter] text-xs text-[var(--muted)]">
           <Link to="/" className="text-[var(--accent-deep)] underline-offset-4 hover:underline">
