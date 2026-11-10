@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <rect width="1280" height="800" fill="#182326"/>
+  <g font-family="ui-monospace, Menlo, Consolas, monospace">
+    <circle cx="60" cy="52" r="8" fill="#cf8579"/><circle cx="88" cy="52" r="8" fill="#d2b97b"/><circle cx="116" cy="52" r="8" fill="#91ab91"/>
+    <text x="1224" y="60" text-anchor="end" font-size="20" fill="#a8b7b8">REPORT PREVIEW</text>
+    <path d="M0 94H1280" stroke="#354144"/>
+    <text x="64" y="172" font-size="40" fill="#edf0e5">failure-harness</text>
+    <text x="64" y="220" font-size="23" fill="#a8b7b8">json_schema_smoke · qwen2.5:1.5b</text>
+    <rect x="64" y="265" width="1152" height="112" rx="8" fill="#253638"/>
+    <text x="96" y="337" font-size="47" fill="#bcdfae">5 / 5 passed</text>
+    <text x="1184" y="332" text-anchor="end" font-size="25" fill="#c3cecb">2.91s avg.</text>
+    <g font-size="27" fill="#e1e6df">
+      <text x="64" y="448">calendar_event</text>
+      <text x="64" y="502">classification</text>
+      <text x="64" y="556">contact_extraction</text>
+      <text x="64" y="610">invoice</text>
+      <text x="64" y="664">optional_nullable</text>
+    </g>
+    <g font-size="24" fill="#bcdfae" text-anchor="end">
+      <text x="1216" y="448">PASS</text><text x="1216" y="502">PASS</text><text x="1216" y="556">PASS</text><text x="1216" y="610">PASS</text><text x="1216" y="664">PASS</text>
+    </g>
+    <path d="M64 709H1216" stroke="#354144"/>
+    <text x="64" y="754" font-size="20" fill="#a8b7b8">Recorded run · 26 Apr 2026</text>
+    <text x="1216" y="754" text-anchor="end" font-size="20" fill="#a8b7b8">JSON schema validation</text>
+  </g>
+</svg>

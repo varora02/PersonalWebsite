@@ -20,3 +20,6 @@ Tasks/
 
 # Tracked video assets in public/ (ensure they are not ignored)
 !public/videos/*.mp4
+
+# Local design explorations and comparison previews
+output/

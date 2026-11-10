@@ -1,41 +1,27 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { SiteNav } from "../components/SiteNav";
+import { SiteFooter } from "../components/SiteFooter";
 import { lifeosInsights, lifeosStack } from "../data/lifeosArticle";
 
 export function LifeOSMetricsPage() {
-  const navigate = useNavigate();
-
   return (
-    <div className="bg-[var(--background)] text-[var(--foreground)]">
-      <div className="mx-auto max-w-4xl px-8 py-6">
-        <nav className="flex items-center justify-between">
-          <Link
-            to="/"
-            className="brand-logo font-[Instrument_Serif] text-4xl tracking-tight md:text-5xl"
-          >
-            Varun Arora
-          </Link>
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 rounded-full border border-black/10 bg-white px-5 py-2 font-[Inter] text-sm text-[var(--muted)] shadow-sm transition-all hover:scale-105 hover:shadow"
-          >
-            ← Back
-          </button>
-        </nav>
-      </div>
-
-      <article className="mx-auto max-w-4xl px-8 pb-24 pt-8">
-        <h1 className="font-[Instrument_Serif] text-5xl leading-[1.05] text-[#000] sm:text-6xl">
+    <div className="article-page">
+      <SiteNav />
+      <article id="main" className="mx-auto max-w-4xl px-8 pb-24 pt-8">
+        <Link className="article-back" to="/notes">← Notes</Link>
+        <p className="eyebrow mb-5">Essay / Systems & self-observation</p>
+        <h1 className="font-['IBM_Plex_Sans'] text-5xl leading-[1.05] text-[#000] sm:text-6xl">
           Instrumenting my life
         </h1>
-        <p className="mt-4 max-w-2xl font-[Inter] text-lg leading-8 text-[var(--muted)]">
+        <p className="mt-4 max-w-2xl font-['IBM_Plex_Sans'] text-lg leading-8 text-[var(--muted)]">
           How I'm using LifeOS to track location, screentime, and biometrics — then turning that data into a weekly timeline to make better decisions.
         </p>
 
         <div className="mt-12 h-px w-full bg-black/6" />
 
-        <div className="mt-12 space-y-10 font-[Inter] text-base leading-8 text-[#333]">
+        <div className="mt-12 space-y-10 font-['IBM_Plex_Sans'] text-base leading-8 text-[#333]">
           <section>
-            <h2 className="font-[Instrument_Serif] text-3xl text-[#000]">The premise</h2>
+            <h2 className="font-['IBM_Plex_Sans'] text-3xl text-[#000]">The premise</h2>
             <p className="mt-4">
               Most people have no idea where their time actually goes. I didn't either. I knew vaguely that I was "busy" but couldn't tell you how many hours I spent in deep work vs. shallow scrolling on any given day.
             </p>
@@ -45,7 +31,7 @@ export function LifeOSMetricsPage() {
           </section>
 
           <section>
-            <h2 className="font-[Instrument_Serif] text-3xl text-[#000]">The weekly timeline</h2>
+            <h2 className="font-['IBM_Plex_Sans'] text-3xl text-[#000]">The weekly timeline</h2>
             <p className="mt-4">
               The core output is a 7-day calendar-style timeline. Each day shows:
             </p>
@@ -61,7 +47,7 @@ export function LifeOSMetricsPage() {
           </section>
 
           <section>
-            <h2 className="font-[Instrument_Serif] text-3xl text-[#000]">Data-oriented decisions</h2>
+            <h2 className="font-['IBM_Plex_Sans'] text-3xl text-[#000]">Data-oriented decisions</h2>
             <p className="mt-4">
               The point isn't to track for the sake of tracking. It's to close the feedback loop between how I <em>feel</em> about my week and what <em>actually</em> happened.
             </p>
@@ -79,7 +65,7 @@ export function LifeOSMetricsPage() {
           </section>
 
           <section>
-            <h2 className="font-[Instrument_Serif] text-3xl text-[#000]">The stack</h2>
+            <h2 className="font-['IBM_Plex_Sans'] text-3xl text-[#000]">The stack</h2>
             <p className="mt-4">
               The pipeline runs locally on my Mac via <code className="rounded bg-[var(--surface)] px-1.5 py-0.5 text-sm">launchd</code> — a Python script pulls from each API, processes the data, generates the dashboard HTML, and deploys to Cloudflare Pages behind Zero Trust auth.
             </p>
@@ -93,7 +79,7 @@ export function LifeOSMetricsPage() {
           </section>
 
           <section>
-            <h2 className="font-[Instrument_Serif] text-3xl text-[#000]">What's next</h2>
+            <h2 className="font-['IBM_Plex_Sans'] text-3xl text-[#000]">What's next</h2>
             <p className="mt-4">
               I'm currently experimenting with correlation analysis — specifically testing whether Whoop recovery scores can reliably predict my productive output for the day. If the signal is strong enough, the system could suggest what kind of work to prioritize each morning before I even open my laptop.
             </p>
@@ -101,13 +87,7 @@ export function LifeOSMetricsPage() {
         </div>
       </article>
 
-      <footer className="border-t border-black/6 bg-[var(--background)] px-8 py-10 text-center">
-        <p className="font-[Inter] text-xs text-[var(--muted)]">
-          <Link to="/" className="text-[var(--accent-deep)] underline-offset-4 hover:underline">
-            ← Back to main site
-          </Link>
-        </p>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

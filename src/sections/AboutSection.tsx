@@ -1,30 +1,26 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FadeIn } from "../components/FadeIn";
+import { publicAsset } from "../lib/assets";
 
 export function AboutSection() {
+  const [photograph, setPhotograph] = useState(false);
   return (
-    <section id="about" className="border-t border-black/6 bg-[var(--background)] px-6 py-20 md:px-8 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <FadeIn>
-          <div className="mb-14">
-            <p className="mb-3 font-[Inter] text-xs uppercase tracking-[0.32em] text-[var(--accent-deep)]">
-              About
-            </p>
-            <h2 className="font-[Instrument_Serif] text-4xl leading-[1] text-[#000] sm:text-5xl">
-              Who I am.
-            </h2>
+    <section id="about" className="section-shell about-section" aria-labelledby="about-heading"><FadeIn>
+      <h1 id="about-heading" className="page-title">About</h1>
+      <div className="about-grid">
+        <div className="about-copy">
+          <p className="about-lead">I’m Varun.<br />I make apps, games, and tools.</p>
+          <a className="text-link" href="mailto:varorav99@gmail.com">Get in touch ↗</a>
+        </div>
+        <div className="mango-card">
+          <div className="mango-image-wrap">
+            <img src={publicAsset(photograph ? "mango/IMG_2973.jpeg" : "art/mango-painted.jpg")} alt={photograph ? "Mango, a black-and-white tuxedo cat, looking into a mirror" : "Painted portrait of Mango resting in a garden"} width="1536" height="1024" loading="lazy" />
+            <button className="mango-switch" type="button" aria-pressed={photograph} onClick={() => setPhotograph((current) => !current)}>{photograph ? "Show painting" : "Show photograph"}<span aria-hidden="true">↔</span></button>
           </div>
-        </FadeIn>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {[1, 2, 3, 4].map((_, i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div className="flex h-48 items-center justify-center rounded-2xl border border-dashed border-black/10 bg-[var(--surface)]">
-                <p className="font-[Inter] text-xs text-[var(--muted)] italic">About details coming soon</p>
-              </div>
-            </FadeIn>
-          ))}
+          <div className="mango-caption"><h2>Mango</h2><Link to="/cat" className="text-link">Photo album ↗</Link></div>
         </div>
       </div>
-    </section>
+    </FadeIn></section>
   );
 }

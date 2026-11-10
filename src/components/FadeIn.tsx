@@ -1,27 +1,8 @@
-import { useRef } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
 import { useOnScreen } from "../hooks/useOnScreen";
 
-type FadeInProps = {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-};
-
-export function FadeIn({ children, delay = 0, className = "" }: FadeInProps) {
+export function FadeIn({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const visible = useOnScreen(ref, "-60px");
-
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(24px)",
-        transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  );
+  const visible = useOnScreen(ref, "0px");
+  return <div ref={ref} className={`reveal ${visible ? "is-visible" : ""} ${className}`} style={{ "--reveal-delay": `${delay}s` } as CSSProperties}>{children}</div>;
 }
