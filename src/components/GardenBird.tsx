@@ -37,9 +37,9 @@ export function GardenBird() {
   }
 
   return (
-    <div className="garden-bird-anchor" data-state={state} data-reduced-motion={reducedMotion}>
+    <div className="garden-bird-anchor" hidden={!ready} data-state={state} data-reduced-motion={reducedMotion}>
       <span className="bird-contact-shadow" aria-hidden="true" />
-      {state !== "away" && <span className="garden-bird-flight" aria-hidden="true"><span className="garden-bird-sprite" /></span>}
+      {state !== "away" && <span className="garden-bird-flight" aria-hidden="true"><span className="garden-bird-sprite" style={{ backgroundImage: `url("${publicAsset("art/garden-bird.png")}")` }} /></span>}
       <button
         type="button"
         className="garden-bird-button"
@@ -47,9 +47,7 @@ export function GardenBird() {
         aria-pressed={state === "perched" || state === "arriving"}
         aria-disabled={!ready || state === "arriving" || state === "leaving"}
         onClick={toggleBird}
-      >
-        <span className="garden-bird-marker" aria-hidden="true"><span /></span>
-      </button>
+      />
       <span className="sr-only" role="status">{state === "perched" ? "A bird is perched on the statue’s head." : state === "leaving" ? "The bird flies away." : ""}</span>
     </div>
   );

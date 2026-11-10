@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { SiteTheme } from "./components/SiteTheme";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AboutPage } from "./pages/AboutPage";
 import { NotesPage, NotePage } from "./pages/NotesPage";
@@ -18,7 +19,7 @@ export default function AppRouter() {
     return () => cancelAnimationFrame(frame);
   }, [pathname, hash]);
   return (
-    <div id="top"><a className="skip-link" href="#main">Skip to content</a><Routes>
+    <SiteTheme><div id="top"><a className="skip-link" href="#main">Skip to content</a><Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/notes" element={<NotesPage />} />
@@ -27,6 +28,6 @@ export default function AppRouter() {
       <Route path="/cat" element={<CatPage />} />
       <Route path="/writing/instrumenting-my-life" element={<LifeOSMetricsPage />} />
       <Route path="/experiments/lifeos-metrics" element={<LifeOSMetricsPage />} />
-    </Routes></div>
+    </Routes></div></SiteTheme>
   );
 }

@@ -1,10 +1,11 @@
-import { useEffect, useRef, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { GardenBird } from "../components/GardenBird";
 import { SiteNav } from "../components/SiteNav";
 import { publicAsset } from "../lib/assets";
 
 export function HeroSection() {
   const hero = useRef<HTMLElement>(null);
+  const [nightReady, setNightReady] = useState(false);
   const plane = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const element = hero.current;
@@ -38,8 +39,9 @@ export function HeroSection() {
       event.currentTarget.style.setProperty("--garden-x", "0px");
       event.currentTarget.style.setProperty("--garden-y", "0px");
     }}>
-      <div className="garden-plane" ref={plane}>
+      <div className="garden-plane" ref={plane} data-night-ready={nightReady}>
         <img className="garden-art" src={publicAsset("art/garden.jpg")} alt="" loading="eager" width="1774" height="887" />
+        <img className="garden-art garden-art-night" src={publicAsset("art/garden-night.png")} alt="" loading="eager" decoding="async" width="1774" height="887" onLoad={() => setNightReady(true)} />
         <GardenBird />
       </div>
       <div className="garden-shade" />

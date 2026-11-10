@@ -9,3 +9,15 @@
   --surface-soft: #e6e9d9;
   --rule: #cbd0bf;
 }
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #111e1c;
+  --foreground: #eae7d7;
+  --muted: #adb8a8;
+  --accent: #acb88f;
+  --accent-deep: #c9d4b6;
+  --surface: #1b2b27;
+  --surface-soft: #23362e;
+  --rule: #36473d;
+}
